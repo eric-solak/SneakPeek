@@ -2,7 +2,7 @@
 
 ### Backend
 ```angular2html
-python3 agentX.py
+python3 backend/agentX.py
 ```
 
 ### Frondend
