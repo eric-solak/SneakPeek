@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import axios from "axios";
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import LoginScreen from './screens/LoginScreen';
+import CreateAccountScreen from './screens/CreateAccountScreen';
+import FeedScreen from './screens/FeedScreen';
 
-const App = () => {
-  const [message, setMessage] = useState("");
+const Stack = createStackNavigator();
+const primaryColor = '#674a99';
 
-  useEffect(() => {
-    axios.get("http://127.0.0.1:5000/agent1") // Flask backend
-      .then(response => setMessage(response.data.message))
-      .catch(error => console.error("Error fetching data:", error));
-  }, []);
-
+export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>{message || "Fetching data..."}</Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator 
+        initialRouteName="Login"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: primaryColor,
+          },
+          headerTintColor: '#fff',
+        }}
+      >
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="CreateAccount" component={CreateAccountScreen} options={{ title: 'Create Account' }} />
+        <Stack.Screen name="Feed" component={FeedScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
-
-export default App;
+}
