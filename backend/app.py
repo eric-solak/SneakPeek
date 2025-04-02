@@ -37,10 +37,10 @@ def home():
     result = identification.getresponse()
     return jsonify({"message": result})
 
-@app.route('/add-user', methods=['GET'])
+@app.route('/add-user', methods=['POST'])
 def add_user():
-    password = request.args.get('password')
-    email = request.args.get('email')
+    password = request.form.get('password')
+    email = request.form.get('email')
     with app.app_context():
         db.session.execute(
             text('INSERT INTO users (password, email) VALUES (:password, :email)'),
@@ -48,7 +48,6 @@ def add_user():
         )
         db.session.commit()
     return jsonify({"result": "success"})
-
 
 if __name__ == '__main__':
     setup_db()
