@@ -57,9 +57,8 @@ def home():
 
     db.session.execute(text('''
                 INSERT INTO posts (image_path, description, rating, identification) VALUES
-                (image_path, post_details, 25, result);
-            '''))
-        
+                (:image_path, :post_details, 25, :result);
+            ''').bindparams(image_path=image_path, post_details=post_details, result=result))
 
     return jsonify({"message": result})
 
