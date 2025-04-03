@@ -1,5 +1,5 @@
-from backend.blackboard import Blackboard
-from backend.agents import *
+from blackboard import Blackboard
+from agents import *
 
 
 class BlackboardController:
