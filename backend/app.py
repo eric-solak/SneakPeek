@@ -3,7 +3,7 @@ from flask_cors import CORS  # Enable CORS for React Native
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 import os
-from backend.blackboard import BlackboardController
+from blackboard import BlackboardController
 
 app = Flask(__name__)
 CORS(app)  # Allow requests from React Native
@@ -25,6 +25,7 @@ def setup_db():
         '''))
         db.session.commit()
 
+
 @app.route('/identify', methods=['POST'])
 def home():
     image = request.files['image']
@@ -37,18 +38,37 @@ def home():
     result = identification.getresponse()
     return jsonify({"message": result})
 
-@app.route('/add-user', methods=['GET'])
+@app.route('/add_user', methods=['GET'])
 def add_user():
     password = request.args.get('password')
     email = request.args.get('email')
+
     with app.app_context():
+        # Insert the new user
         db.session.execute(
             text('INSERT INTO users (password, email) VALUES (:password, :email)'),
             {'password': password, 'email': email}
         )
         db.session.commit()
-    return jsonify({"result": "success"})
 
+        # Run raw SQL to select all users
+        result = db.session.execute(text('SELECT * FROM users'))
+
+        # Convert rows to dicts
+        users = [dict(row._mapping) for row in result]
+
+    return jsonify({"result": "success", "DB": users})
+
+
+'''
+Get all posts 
+create post store in db
+identify 
+
+- delete post 
+- comment 
+
+'''
 
 if __name__ == '__main__':
     setup_db()
