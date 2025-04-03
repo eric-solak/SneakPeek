@@ -38,11 +38,11 @@ def home():
     result = identification.getresponse()
     return jsonify({"message": result})
 
+
 @app.route('/add_user', methods=['GET'])
 def add_user():
     password = request.args.get('password')
     email = request.args.get('email')
-
     with app.app_context():
         # Insert the new user
         db.session.execute(
@@ -50,6 +50,7 @@ def add_user():
             {'password': password, 'email': email}
         )
         db.session.commit()
+
 
         # Run raw SQL to select all users
         result = db.session.execute(text('SELECT * FROM users'))
