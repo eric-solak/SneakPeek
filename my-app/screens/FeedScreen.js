@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList, Image } from 'react-native';
 
+const IP = "<YOUR IP>";
 const primaryColor = '#674a99';
 
 const FeedScreen = () => {
   const [posts, setPosts] = useState([]);
-
+  
   // Replace this with your actual local IP address
-  const API_URL = 'http://<YOUR IP>:5000/get-posts';
+  const API_URL = `http://${IP}:5000/get-posts`;
 
   useEffect(() => {
     fetch(API_URL)
@@ -23,7 +24,7 @@ const FeedScreen = () => {
   const renderItem = ({ item }) => (
     <View style={styles.postContainer}>
       <Image
-        source={{ uri: `http://<YOUR IP>:5000/${item.image_path}` }}
+        source={{ uri: `http://${IP}:5000/${item.image_path}` }}
         style={styles.image}
         resizeMode="cover"
       />

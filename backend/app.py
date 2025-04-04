@@ -3,6 +3,7 @@ from flask_cors import CORS  # Enable CORS for React Native
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 import os
+import json
 from blackboard import BlackboardController
 
 app = Flask(__name__)
@@ -54,11 +55,12 @@ def home():
     identification = BlackboardController(image_path, post_details)
     identification.identify()
     result = identification.getresponse()
+    result_json = json.dumps(result)
 
     db.session.execute(text('''
                 INSERT INTO posts (image_path, description, rating, identification) VALUES
                 (:image_path, :post_details, 25, :result);
-            ''').bindparams(image_path=image_path, post_details=post_details, result=result))
+            ''').bindparams(image_path=image_path, post_details=post_details, result=result_json))
 
     return jsonify({"message": result})
 
