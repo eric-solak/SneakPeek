@@ -33,7 +33,7 @@ class Classification:
         ])
 
     def analyze(self, image_path):
-        image = Image.open(image_path) 
+        image = Image.open(image_path).convert('RGB') 
         image = self.test_transform(image).unsqueeze(0)
         image = image.to('cpu')
 

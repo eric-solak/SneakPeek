@@ -15,23 +15,23 @@ db = SQLAlchemy(app)
 
 print("Database location:", os.path.abspath(app.config['SQLALCHEMY_DATABASE_URI'].replace('sqlite:///', '')))
 
-@app.route('/identify', methods=['POST'])
-def identify():
+@app.route('/createpost', methods=['POST'])
+def create_post():
     image = request.files['image']
     image_path = os.path.join("images", image.filename)
     image.save(image_path)
-    post_details = request.form["post_details"]
+    post_description = request.form["post_description"]
     post_title = request.form["post_title"]
 
-    identification = BlackboardController(image_path, post_details)
+    identification = BlackboardController(image_path, post_description)
     identification.identify()
     result = identification.getresponse()
     result_json = json.dumps(result)
 
     db.session.execute(text('''
                 INSERT INTO posts (image_path, description, rating, identification, title) VALUES
-                (:image_path, :post_details, 25, :result, :title);
-            ''').bindparams(image_path=image_path, post_details=post_details, result=result_json, title=post_title))
+                (:image_path, :description, 0, :result, :title);
+            ''').bindparams(image_path=image_path, description=post_description, result=result_json, title=post_title))
     db.session.commit()
 
     return jsonify({"message": result})

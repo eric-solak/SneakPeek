@@ -27,17 +27,17 @@ class DummyBlackboardController:
     def getresponse(self):
         return "dummy_result"
 
-def test_identify(client, monkeypatch):
+def test_createpost(client, monkeypatch):
     
     monkeypatch.setattr("app.BlackboardController", DummyBlackboardController)
     
     # Simulate a POST request to /identify
     data = {
-        "post_details": "This is the post detaills",
+        "post_description": "This is the post detaills",
         "post_title": "This is the post title",
         "image": (io.BytesIO(b"testing image"), "test.png")
     }
-    response = client.post("/identify", data=data, content_type="multipart/form-data")
+    response = client.post("/createpost", data=data, content_type="multipart/form-data")
     
     # Testing response
     assert response.status_code == 200
