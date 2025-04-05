@@ -13,8 +13,8 @@ const LoginScreen = ({ navigation }) => {
       setError('Please fill in all fields.');
       return;
     }
-    // Dummy login: Navigate to Feed on valid submission
-    navigation.navigate('Feed');
+
+    navigation.navigate('Main');
   };
 
   return (
