@@ -31,6 +31,7 @@ def create_post():
     image.thumbnail((800, 800), Image.Resampling.LANCZOS)
     unique_filename = f"{uuid.uuid4()}.png"
     image_path = os.path.join("images", unique_filename)
+    image_path_url = image_path.replace(os.sep, "/")
     image.save(image_path, format="PNG")
 
     identification_request = BlackboardController(image_path, post_description)
@@ -41,7 +42,7 @@ def create_post():
     db.session.execute(text('''
                 INSERT INTO posts (image_path, description, rating, identification, title) VALUES
                 (:image_path, :description, 0, :result, :title);
-            ''').bindparams(image_path=image_path, description=post_description, result=result_json, title=post_title))
+            ''').bindparams(image_path=image_path_url, description=post_description, result=result_json, title=post_title))
     db.session.commit()
 
     return jsonify({"message": result})

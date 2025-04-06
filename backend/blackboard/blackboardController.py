@@ -12,10 +12,14 @@ class BlackboardController:
         self.response = {}
 
     def identify(self):
-        self.response['response1'] = self.classification_agent.analyze(self.image_path)
-        self.response['response2'] = self.llm_agent.analyze(self.image_path)
-        self.response['response3'] = self.other_agent.analyze(self.image_path)
-        self.blackboard.update_identification(self.response)
+        try:
+            self.response['response1'] = self.classification_agent.analyze(self.image_path)
+            self.response['response2'] = self.llm_agent.analyze(self.image_path)
+            self.response['response3'] = self.other_agent.analyze(self.image_path)
+        except Exception as e:
+            print("Unable to identify error:" + e)
+        finally:
+            self.blackboard.update_identification(self.response)
 
     def getresponse(self):
         return self.blackboard.return_identification()
