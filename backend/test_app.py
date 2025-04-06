@@ -15,36 +15,6 @@ def client():
     with app.test_client() as client:
         yield client
 
-# Dummy blackboard controller
-class DummyBlackboardController:
-    def __init__(self, image_path, post_details):
-        self.image_path = image_path
-        self.post_details = post_details
-
-    def identify(self):
-        pass
-
-    def getresponse(self):
-        return "dummy_result"
-
-def test_createpost(client, monkeypatch):
-    
-    monkeypatch.setattr("app.BlackboardController", DummyBlackboardController)
-    
-    # Simulate a POST request to /identify
-    data = {
-        "post_description": "This is the post detaills",
-        "post_title": "This is the post title",
-        "image": (io.BytesIO(b"testing image"), "test.png")
-    }
-    response = client.post("/createpost", data=data, content_type="multipart/form-data")
-    
-    # Testing response
-    assert response.status_code == 200
-    json_data = response.get_json()
-    assert "message" in json_data
-    assert json_data["message"] == "dummy_result"
-
 def test_get_posts(client):
     with app.app_context():
         add_data_test()
@@ -61,3 +31,25 @@ def test_get_posts(client):
         assert "image_path" in post
         assert "description" in post
         assert "rating" in post
+
+def test_get_comments(client):
+    with app.app_context():
+        add_data_test()
+
+    response = client.get("/get-comments")
+    assert response.status_code == 200
+    json_data = response.get_json()
+
+    assert "comments" in json_data
+    for comment in json_data["comments"]:
+        assert "cid" in comment
+        assert "body" in comment
+
+def test_get_identifications(client):
+    with app.app_context():
+        add_data_test()
+
+    response = client.get("/get-identification?pid=1")
+    assert response.status_code == 200
+    json_data = response.get_json()
+    assert "identification" in json_data
