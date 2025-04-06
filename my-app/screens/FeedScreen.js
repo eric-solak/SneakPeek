@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList, Image } from 'react-native';
 
-const IP = "<YOUR IP>";
+const IP = `${process.env.EXPO_PUBLIC_IP}`;
 const primaryColor = '#674a99';
 
 const FeedScreen = () => {
