@@ -55,9 +55,9 @@ def add_data_test():
 
             db.session.execute(text('''
                 INSERT INTO posts (image_path, description, title) VALUES
-                ('/images/img_1.png', 'What is the make of this shoe?', 'Red Sneaker'),
-                ('/images/img.png', 'Where can I buy this shoe', 'Black Sneakers'),
-                ('/images/img_1.png', 'This is my favourite shoe', 'White High Tops');
+                ('/images/testing1.png', 'What is the make of this shoe?', 'Running Shoe'),
+                ('/images/testing2.png', 'Where can I buy this shoe', 'Basketball Shoe'),
+                ('/images/testing3.png', 'This is my favourite shoe', 'White High Tops');
             '''))
 
             db.session.execute(text('''
@@ -88,4 +88,4 @@ identify
 
 if __name__ == '__main__':
     setup_db()
-    add_data_test()
+    #add_data_test()
