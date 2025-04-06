@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, FlatList, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 
 const IP = `${process.env.EXPO_PUBLIC_IP}`;
 const primaryColor = '#674a99';
 
 const FeedScreen = () => {
   const [posts, setPosts] = useState([]);
-  
-  // Replace this with your actual local IP address
   const API_URL = `http://${IP}:5000/get-posts`;
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetch(API_URL)
@@ -22,15 +22,17 @@ const FeedScreen = () => {
   }, []);
 
   const renderItem = ({ item }) => (
-    <View style={styles.postContainer}>
-      <Image
-        source={{ uri: `http://${IP}:5000/${item.image_path}` }}
-        style={styles.image}
-        resizeMode="cover"
-      />
-      <Text style={styles.description}>{item.description}</Text>
-      <Text style={styles.rating}>⭐ {item.rating}</Text>
-    </View>
+    <TouchableOpacity onPress={() => navigation.navigate('PostDetail', { post: item })}>
+      <View style={styles.postContainer}>
+        <Image
+          source={{ uri: `http://${IP}:5000/${item.image_path}` }}
+          style={styles.image}
+          resizeMode="cover"
+        />
+        <Text style={styles.description}>{item.description}</Text>
+        <Text style={styles.rating}>⭐ {item.rating}</Text>
+      </View>
+    </TouchableOpacity>
   );
 
   return (
