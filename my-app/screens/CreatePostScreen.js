@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
+const IP = `${process.env.EXPO_PUBLIC_IP}`;
+const API_URL = `http://${IP}:5000/createpost`;
 const primaryColor = '#674a99';
 
 const CreatePostScreen = () => {
   const [title, setTitle] = useState('');
   const [comment, setComment] = useState('');
   const [image, setImage] = useState(null);
-
 
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -27,7 +28,6 @@ const CreatePostScreen = () => {
     }
   };
 
-
   const takePhoto = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     if (!permissionResult.granted) {
@@ -44,17 +44,43 @@ const CreatePostScreen = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!title || !comment || !image) {
       Alert.alert("Incomplete", "Please fill out all fields including an image.");
       return;
     }
 
-    Alert.alert("Success", "Post created successfully!");
+    // Prepare the file details from the image URI.
+    const filename = image.split('/').pop();
+    const match = /\.(\w+)$/.exec(filename);
+    const type = match ? `image/${match[1]}` : `image`;
 
-    setTitle('');
-    setComment('');
-    setImage(null);
+    const formData = new FormData();
+    formData.append('image', { uri: image, name: filename, type });
+    formData.append('post_description', comment);
+    formData.append('post_title', title);
+
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        body: formData,
+        // When using FormData in React Native, it's best to let the fetch API set the correct headers.
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        Alert.alert("Success", "Post created successfully!");
+        setTitle('');
+        setComment('');
+        setImage(null);
+      } else {
+        Alert.alert("Error", data.message || "Something went wrong!");
+      }
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    }
   };
 
   return (
