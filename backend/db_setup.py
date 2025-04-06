@@ -29,7 +29,7 @@ def setup_db():
                 identification TEXT, 
                 description TEXT,
                 rating INTEGER NOT NULL DEFAULT 0,
-                time DATE
+                time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         '''))
         db.session.execute(text('''
@@ -54,10 +54,10 @@ def add_data_test():
             '''))
 
             db.session.execute(text('''
-                INSERT INTO posts (image_path, description, title) VALUES
-                ('/images/testing1.png', 'What is the make of this shoe?', 'Running Shoe'),
-                ('/images/testing2.png', 'Where can I buy this shoe', 'Basketball Shoe'),
-                ('/images/testing3.png', 'This is my favourite shoe', 'White High Tops');
+                INSERT INTO posts (image_path, description, title, identification) VALUES
+                ('/images/testing1.png', 'What is the make of this shoe?', 'Running Shoe', 'Adidas Ultraboost Grey'),
+                ('/images/testing2.png', 'Where can I buy this shoe', 'Basketball Shoe', 'Air Jordan 1 Retro High OG "Chicago"'),
+                ('/images/testing3.png', 'This is my favourite shoe', 'White High Tops', 'Nothing New High Tops in a light canvas color');
             '''))
 
             db.session.execute(text('''

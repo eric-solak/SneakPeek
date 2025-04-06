@@ -55,7 +55,7 @@ def get_posts():
         post_query = db.session.execute(text('''
             SELECT p.pid, p.image_path, p.description, p.rating
             FROM posts p 
-            ORDER BY p.rating DESC
+            ORDER BY p.time DESC
             LIMIT 10;
         '''))
         rows = post_query.fetchall()
