@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
-const IP = `${process.env.EXPO_PUBLIC_IP}`; // Or use Constants.expoConfig.extra
+const IP = `${process.env.EXPO_PUBLIC_IP}`;
 const primaryColor = '#674a99';
 
 const PostDetailScreen = ({ route }) => {
