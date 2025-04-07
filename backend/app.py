@@ -37,13 +37,15 @@ def create_post():
     identification_request = BlackboardController(image_path, post_description)
     identification_request.identify()
     result = identification_request.getresponse()
-    result_json = json.dumps(result)
+
 
     db.session.execute(text('''
-                INSERT INTO posts (image_path, description, rating, identification, title) VALUES
-                (:image_path, :description, 0, :result, :title);
-            ''').bindparams(image_path=image_path_url, description=post_description, result=result_json, title=post_title))
+                INSERT INTO posts (image_path, description, rating, identification, title, link) VALUES
+                (:image_path, :description, 0, :result, :title, :link);
+            ''').bindparams(image_path=image_path_url, description=post_description, result=result["identification"],
+                            title=post_title, link=result["purchase_link"]))
     db.session.commit()
+    result_json = json.dumps(result)
 
     return jsonify({"message": result})
 

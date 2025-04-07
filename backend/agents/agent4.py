@@ -18,9 +18,7 @@ class BuyingAgent:
         For example if the shoe is for sale on the nike website, provide a link to the website.
         If the shoe is no longer availible for purchase either say that or where it can be bought at resale.
         Do not specify an exact link to the shoe but only to the main webpage of the seller. 
-        You response should be formatted in a markdown friendly manner as follows:
-        
-        You can often find <INSERT SHOE NAME> on the following websites:
+        You response should be formatted in a plaintext friendly manner as follows:
         
         *   <WEBSITE NAME>: <LINK>
         *   <WEBSITE NAME>: <LINK>
