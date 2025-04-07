@@ -12,7 +12,7 @@ class SummarizationAgent:
 
     def analyze(self, agent_results):
         prompt = f""" 
-        Provide a markdown formatted response that summarizes the shoe identification based on the context. 
+        Provide a plaintext formatted response that summarizes the shoe identification based on the context. 
         You answer should provide the following:
         Brand: <BRAND>
         ShoeModel: <Model>
