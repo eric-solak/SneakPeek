@@ -1,14 +1,14 @@
 from blackboard import Blackboard
-from agents import *
+from agents import BlipIdentification, LlmIdentification, Classification
 
 
 class BlackboardController:
     def __init__(self, image_path, post_details):
         self.image_path = image_path
         self.blackboard = Blackboard(image_path, post_details)
-        self.classification_agent = BlipIdentification()
+        self.classification_agent = Classification()
         self.llm_agent = LlmIdentification()
-        self.other_agent = OtherID()
+        self.other_agent = BlipIdentification()
         self.response = {}
 
     def identify(self):
