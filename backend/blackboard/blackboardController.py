@@ -6,7 +6,7 @@ class BlackboardController:
     def __init__(self, image_path, post_details):
         self.image_path = image_path
         self.blackboard = Blackboard(image_path, post_details)
-        self.classification_agent = Classification()
+        self.classification_agent = BlipIdentification()
         self.llm_agent = LlmIdentification()
         self.other_agent = OtherID()
         self.response = {}
