@@ -17,8 +17,9 @@ class BlipIdentification:
         inputs = self.processor(images=image, text=prompt, return_tensors="pt")
 
         # Generating an output (shoe identification results)
-        generated_ids = self.model.generate(**inputs, max_new_tokens=100)
-        generated_text = self.processor.tokenizer.decode(generated_ids[0], skip_special_tokens=True).strip()
+        with torch.no_grad(): 
+            generated_ids = self.model.generate(**inputs, max_new_tokens=100)
+            generated_text = self.processor.tokenizer.decode(generated_ids[0], skip_special_tokens=True).strip()
 
         # Returning results 
         return generated_text
