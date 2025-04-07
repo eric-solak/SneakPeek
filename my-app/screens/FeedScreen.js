@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 
 const IP = `${process.env.EXPO_PUBLIC_IP}`;
@@ -10,16 +10,19 @@ const FeedScreen = () => {
   const API_URL = `http://${IP}:5000/get-posts`;
   const navigation = useNavigation();
 
-  useEffect(() => {
-    fetch(API_URL)
-      .then((res) => res.json())
-      .then((data) => {
-        setPosts(data.posts);
-      })
-      .catch((error) => {
-        console.error("Error fetching posts:", error);
-      });
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetch(API_URL)
+        .then((res) => res.json())
+        .then((data) => {
+          setPosts(data.posts);
+        })
+        .catch((error) => {
+          console.error("Error fetching posts:", error);
+        });
+    }, [])
+  );
+  
 
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => navigation.navigate('PostDetail', { post: item })}>
