@@ -55,22 +55,12 @@ def get_posts():
 
     with app.app_context():
         post_query = db.session.execute(text('''
-            SELECT p.pid, p.image_path, p.description, p.rating
-            FROM posts p 
-            ORDER BY p.time DESC
-            LIMIT 10;
+            SELECT * FROM posts
+            ORDER BY time DESC
         '''))
         rows = post_query.fetchall()
 
-        posts = [
-            {
-                "pid": row.pid,
-                "image_path": row.image_path,
-                "description": row.description,
-                "rating": row.rating
-            }
-            for row in rows
-        ]
+        posts = [dict(row._mapping) for row in rows]
 
     return jsonify({"posts": posts})
 
