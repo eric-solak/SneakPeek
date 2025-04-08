@@ -49,28 +49,38 @@ def create_post():
 
     return jsonify({"message": result})
 
+@app.route('/add-comment', methods=['POST'])
+def add_comment():
+    data = request.get_json()
+    post_id = data.get("pid")
+    body = data.get("body")
+
+    if not post_id or not body:
+        return jsonify({"success": False, "error": "Missing post ID or comment body"}), 400
+
+    try:
+        db.session.execute(text('''
+            INSERT INTO comments (post_id, body)
+            VALUES (:post_id, :body)
+        ''').bindparams(post_id=post_id, body=body))
+        db.session.commit()
+        return jsonify({"success": True})
+    except Exception as e:
+        print(f"Error adding comment: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
 
 @app.route('/get-posts', methods=['GET'])
 def get_posts():
 
     with app.app_context():
         post_query = db.session.execute(text('''
-            SELECT p.pid, p.image_path, p.description, p.rating
-            FROM posts p 
-            ORDER BY p.time DESC
-            LIMIT 10;
+            SELECT * FROM posts
+            ORDER BY time DESC
         '''))
         rows = post_query.fetchall()
 
-        posts = [
-            {
-                "pid": row.pid,
-                "image_path": row.image_path,
-                "description": row.description,
-                "rating": row.rating
-            }
-            for row in rows
-        ]
+        posts = [dict(row._mapping) for row in rows]
 
     return jsonify({"posts": posts})
 
