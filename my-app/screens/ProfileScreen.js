@@ -41,15 +41,50 @@ const ProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 25, paddingTop: 60 },
-  header: { alignItems: 'center', marginBottom: 25 },
-  profilePicContainer: { width: 100, height: 100, borderRadius: 50, backgroundColor: '#f4f4f4', justifyContent: 'center', alignItems: 'center', marginBottom: 10 },
-  profilePic: { fontSize: 40, color: primaryColor },
-  username: { fontSize: 22, fontWeight: 'bold', color: '#333' },
-  optionsContainer: { marginTop: 20 },
-  option: { paddingVertical: 16, borderBottomWidth: 1, borderBottomColor: '#ddd', borderRadius: 8, marginBottom: 12, backgroundColor: '#f9f9f9' },
-  optionText: { fontSize: 18, color: primaryColor, textAlign: 'center' },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 25,
+    paddingTop: 60
+  },
+  header: {
+    alignItems: 'center',
+    marginBottom: 25,
+  },
+  profilePicContainer: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#f4f4f4',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  profilePic: {
+    fontSize: 40,
+    color: primaryColor,
+  },
+  username: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  optionsContainer: {
+    marginTop: 20,
+  },
+  option: {
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    borderRadius: 8,
+    marginBottom: 12,
+    backgroundColor: '#f9f9f9',
+  },
+  optionText: {
+    fontSize: 18,
+    color: primaryColor,
+    textAlign: 'center',
+  },
 });
-
 
 export default ProfileScreen;
