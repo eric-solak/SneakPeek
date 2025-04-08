@@ -1,29 +1,51 @@
-from transformers import Blip2Processor, Blip2ForConditionalGeneration
+from openai import OpenAI
+import os
+from dotenv import load_dotenv
+import base64
 from PIL import Image
-import torch
 
-# Shoe Identification using BLIP-2 model (FLAN-T5 version)
 class BlipIdentification:
     def __init__(self):
-        '''
-        self.processor = Blip2Processor.from_pretrained("Salesforce/blip2-flan-t5-xl")
-        self.model = Blip2ForConditionalGeneration.from_pretrained("Salesforce/blip2-flan-t5-xl")
-        self.model.eval()
-        '''
+        load_dotenv()
+        self.api_key = os.getenv("OPENAI_API_KEY")
+        self.client = OpenAI(api_key=self.api_key)
 
-    # Defining prompt to describe the image 
-    def analyze(self, image_path, prompt="What is in this image?"):
-        '''
-        # Converting image to RGB for accuracy and compatability with model 
-        image = Image.open(image_path).convert("RGB")
-        inputs = self.processor(images=image, text=prompt, return_tensors="pt")
+    def encode_image(self, image_path):
+        with open(image_path, "rb") as image_file:
+            return base64.b64encode(image_file.read()).decode("utf-8")
 
-        # Generating an output (shoe identification results)
-        with torch.no_grad(): 
-            generated_ids = self.model.generate(**inputs, max_new_tokens=100)
-            generated_text = self.processor.tokenizer.decode(generated_ids[0], skip_special_tokens=True).strip()
-        '''
-        generated_text = ''
-        # Returning results 
-        return generated_text
+    def analyze(self, image_path):
+        base64_image = self.encode_image(image_path)
+
+        prompt = """
+         You are an expert in fashion and sneaker identification. Analyze the provided image of a shoe and return the following details:
+                   Brand/Make (e.g., Nike, Adidas, New Balance)
+                   Model Name (e.g., Air Jordan 1, Yeezy Boost 350)
+                   Colorway or Edition (e.g., Bred, Triple White, Off-White x Nike)
+                   Style or Category (e.g., running shoe, basketball sneaker, casual, skateboarding)
+                   Distinguishing Features (e.g., materials, logos, design patterns, lacing system)
+                   Estimated Release Year or Collection (if identifiable)
+                   Be as specific and detailed as possible. If unsure, provide the closest match or a list of possible models."""
+
+        response = self.client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/png;base64,{base64_image}"
+                        },
+                    },
+                ],
+            }
+        ],
+        max_tokens=500,
+    )
+
+
+        return response.choices[0].message.content
 
