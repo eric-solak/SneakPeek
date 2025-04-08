@@ -8,7 +8,7 @@ pip install -r requirements.txt
 ```
 - Must create a .env file add API_KEY=\<google genai key\> from the following link: https://aistudio.google.com/app/apikey
 
-- Must create a .env file add OPENAI_API_KEY=<your OpenAI key here>. This uses GPT-4o (vision) from OpenAI. If you do not have access to a key, please contact to request one. 
+- Must create a .env file add OPENAI_API_KEY=\<your OpenAI key here\>. This uses GPT-4o (vision) from OpenAI. 
 
 
 Running backend:
