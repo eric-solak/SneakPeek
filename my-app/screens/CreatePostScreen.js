@@ -64,7 +64,6 @@ const CreatePostScreen = () => {
       const response = await fetch(API_URL, {
         method: 'POST',
         body: formData,
-        // When using FormData in React Native, it's best to let the fetch API set the correct headers.
         headers: {
           'Content-Type': 'multipart/form-data',
         },
