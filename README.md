@@ -2,7 +2,7 @@
 
 ## 📝 Product Description
 This project is a mobile sneaker identification and social forum app that uses AI to recognize shoe models from user-uploaded images.
-Users post pictures of sneakers, recived AI-powered responses for the exact shoe type, and can interact with posts through ratings and comments.
+Users post pictures of sneakers, recieve AI-powered responses for the exact shoe type, and can interact with posts through ratings and comments.
 
 This project uses a custom, PyTorch based deep-learning model, trained by [Eric Solak](https://github.com/eric-solak). The link to the model can be found on HuggingFace: https://huggingface.co/eric-solak/ShoeClassificationAI
 ## ✨ Features
